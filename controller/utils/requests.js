@@ -7,8 +7,7 @@ function getRequest(host, path, port, callback) {
 		path: path,
 		port: port,
 		headers: {
-			"Content-Type": "application/x-www-form-urlencoded",
-    	"Content-Length": Buffer.byteLength(body)
+			"Content-Type": "application/x-www-form-urlencoded"
   	}
 	}
 	
