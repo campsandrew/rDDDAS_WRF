@@ -27,11 +27,10 @@ function added_directory(dir_path) {
 		var hdfs_cmd = "hdfs dfs -mkdir " + hdfs_dir;
 		
 		cmd.get(hdfs_cmd, function(err, data, stderr) {
-			console.log("Make directory call")
 			if(!err) {
 				console.log("HDFS: directory created " + hdfs_dir);
 			} else {
-				console.log(err.Error);
+				console.log(err);
 			}
 		});
 	}
