@@ -13,7 +13,7 @@ var watcher = chokidar.watch(config.controller.watch_path, {
 })
 .on("addDir", added_directory)
 .on("add", added_file)
-.on("ready", ready);
+//.on("ready", ready);
 	
 function added_directory(dir_path) {
 	var dir_time = dir_path.split(/gfs./);
@@ -54,19 +54,15 @@ function added_file(dir_path) {
 			if(!err) {
 				console.log("HDFS: file added " + hdfs_path);
 			} else {
-				console.log("HDFS ERROR: unable to add file " + hdfs_path);
-				//console.log(err);
+				//console.log("HDFS ERROR: unable to add file " + hdfs_path);
+				console.log(err);
 			}
 		});
 	}
-	
-	
-	
-	
 }
 
-function ready() {
+//function ready() {
 	//console.log("Ready")
-}
+//}
 	
 module.exports = watcher;
