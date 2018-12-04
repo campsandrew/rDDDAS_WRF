@@ -3,7 +3,8 @@ const config = require("../../config");
 const cmd = require("node-cmd");
 const path = require("path");
 
-var watcher = chokidar.watch(config.controller.watch_path, {
+// Data watcher for WRF
+var data_watcher = chokidar.watch(config.controller.data_watch_path, {
   ignored: /(^|[\/\\])\../,
   persistent: true,
 	awaitWriteFinish: {
@@ -11,11 +12,7 @@ var watcher = chokidar.watch(config.controller.watch_path, {
   },
 	depth: 2
 })
-.on("addDir", added_directory)
-.on("add", added_file)
-//.on("ready", ready);
-	
-function added_directory(dir_path) {
+.on("addDir", function(dir_path) {
 	var dir_time = dir_path.split(/gfs./);
 	
 	if(dir_time.length == 2 && dir_time[1].length == 10) {
@@ -35,9 +32,8 @@ function added_directory(dir_path) {
 			}
 		});
 	}
-}
-
-function added_file(dir_path) {
+})
+.on("add", function(dir_path) {
 	var file_split = dir_path.split("/").slice(-2);
 	
 	if(file_split.length == 2) {
@@ -60,10 +56,36 @@ function added_file(dir_path) {
 			}
 		});
 	}
-}
+});
 
-//function ready() {
-	//console.log("Ready")
-//}
+// Geog watcher for WPS
+var geog_watcher = chokidar.watch(config.controller.geog_watch_path, {
+  ignored: /(^|[\/\\])\../,
+  persistent: true,
+	awaitWriteFinish: {
+    pollInterval: 500
+  },
+	depth: 1
+})
+.on("add", function(dir_path) {
+	var filename = dir_path.split("/").slice(-1)[0];
+	var filetype = filename.split(".");
 	
-module.exports = watcher;
+	if(filetype.indexOf("tar") != -1) {
+		var hdfs_path = path.join(config.hdfs.geog_dir, filename);
+		var hdfs_cmd = "hdfs dfs -put -f " + dir_path + " " + hdfs_path;
+
+		// Run hdfs file upload command
+		cmd.get(hdfs_cmd, function(err, data, stderr) {
+			if(!err) {
+				console.log("HDFS: file added " + hdfs_path);
+				cmd.run("rm " + dir_path);
+			} else {
+				console.log("HDFS ERROR: unable to add file " + hdfs_path);
+				//console.log(err);
+			}
+		});
+	}
+});
+
+module.exports = {data_watcher, geog_watcher};

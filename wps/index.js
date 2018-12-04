@@ -9,4 +9,4 @@ const app = express();
 app.use(express.static("client"));
 app.use("/", indexRouter);
 
-app.listen(config.wrf.port);
+app.listen(config.wps.port);
