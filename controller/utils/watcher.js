@@ -22,26 +22,51 @@ function added_directory(dir_path) {
 		var dir = dir_time[1].slice(0, 4) + "_" + 
 							dir_time[1].slice(4, 6) + "_" +
 							dir_time[1].slice(6, 8);
-		var date
 		var hdfs_dir = path.join(config.hdfs.data_dir, dir);
 		var hdfs_cmd = "hdfs dfs -mkdir " + hdfs_dir;
 		
+		// Run hdfs directory creation command
 		cmd.get(hdfs_cmd, function(err, data, stderr) {
 			if(!err) {
 				console.log("HDFS: directory created " + hdfs_dir);
 			} else {
-				console.log(err);
+				console.log("HDFS ERROR: directory already exists " + hdfs_dir);
+				//console.log(err);
 			}
 		});
 	}
 }
 
 function added_file(dir_path) {
-	console.log("Added " + dir_path)
+	var file_split = dir_path.split("/").slice(-2);
+	
+	if(file_split.length == 2) {
+		var filename = file_split[1];
+		var dir_time = file_split[0].split(/gfs./);
+		var dir = dir_time[1].slice(0, 4) + "_" + 
+							dir_time[1].slice(4, 6) + "_" +
+							dir_time[1].slice(6, 8);
+		var hdfs_path = path.join(config.hdfs.data_dir, dir, filename);
+		var hdfs_cmd = "hdfs dfs -put " + dir_path + " " + hdfs_path;
+		
+		// Run hdfs file upload command
+		cmd.get(hdfs_cmd, function(err, data, stderr) {
+			if(!err) {
+				console.log("HDFS: file added " + hdfs_path);
+			} else {
+				console.log("HDFS ERROR: unable to add file " + hdfs_path);
+				//console.log(err);
+			}
+		});
+	}
+	
+	
+	
+	
 }
 
 function ready() {
-	console.log("Ready")
+	//console.log("Ready")
 }
 	
 module.exports = watcher;
