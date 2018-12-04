@@ -80,13 +80,14 @@ var geog_watcher = chokidar.watch(config.controller.geog_watch_path, {
 		cmd.get(hdfs_cmd, function(err, data, stderr) {
 			if(!err) {
 				var port = config.wps.port;
+				var send = {file: filename};
 				
 				console.log("HDFS: file added " + hdfs_path);
 				cmd.run("rm " + dir_path);
 				
 				// Send message to wps nodes to update geographical data
 				for(var wps of config.wps.nodes) {
-					postRequest(wps, "wps/geog-new", port, filename, function(data) {
+					postRequest(wps, "wps/geog-new", port, send, function(data) {
 						console.log(data);
 					});
 				}
