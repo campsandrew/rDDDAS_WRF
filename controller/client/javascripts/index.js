@@ -22,7 +22,7 @@
 		
 		data.wps.forEach(function(host) {
 			let xhr = new XMLHttpRequest();
-			let url = "http://localhost:3000/heartbeat/?node=wps&host=" + host;
+			let url = "http://192.168.56.101:3000/heartbeat/?node=wps&host=" + host;
 			
 			wps.innerHTML += "<li id=wps_" + host + ">" + host + ": " + "Offline</li>";
 			xhr.addEventListener("load", function() {
@@ -38,7 +38,7 @@
 		
 		data.wrf.forEach(function(host) {
 			let xhr = new XMLHttpRequest();
-			let url = "http://localhost:3000/heartbeat/?node=wrf&host=" + host;
+			let url = "http://192.168.56.101:3000/heartbeat/?node=wrf&host=" + host;
 			
 			wrf.innerHTML += "<li id=wrf_" + host + ">" + host + ": " + "Offline</li>";
 			xhr.addEventListener("load", function() {
