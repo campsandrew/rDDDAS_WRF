@@ -15,16 +15,14 @@ var watcher = chokidar.watch(config.controller.watch_path, {
 .on("add", added_file)
 .on("ready", ready);
 	
-function added_directory(path) {
-	var hdfs_cmd = "hdfs dfs -mkdir " + path.join(config.hdfs.data_dir, dir);
-	console.log(hdfs_cmd);
-	return
-	var dir_time = path.split(/gfs./);
+function added_directory(dir_path) {
+	var dir_time = dir_path.split(/gfs./);
 	
 	if(dir_time.length == 2 && dir_time[1].length == 10) {
 		var dir = dir_time[1].slice(0, 4) + "_" + 
 							dir_time[1].slice(4, 6) + "_" +
 							dir_time[1].slice(6, 8);
+		var hdfs_cmd = "hdfs dfs -mkdir " + path.join(config.hdfs.data_dir, dir);
 		
 		cmd.get(hdfs_cmd, function(err, data, stderr) {
 			console.log("Make directory call")
@@ -39,8 +37,8 @@ function added_directory(path) {
 	}
 }
 
-function added_file(path) {
-	console.log("Added " + path)
+function added_file(dir_path) {
+	console.log("Added " + dir_path)
 }
 
 function ready() {
