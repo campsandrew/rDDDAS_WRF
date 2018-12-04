@@ -15,7 +15,8 @@ const config = {
 	},
 	hdfs: {
 		host: "192.168.56.101",
-		port: 8020
+		port: 8020,
+		data_dir: "/wrf/DATA/"
 	}
 }
 
