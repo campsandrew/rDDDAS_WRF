@@ -57,17 +57,16 @@ function postRequest(host, path, port, data, callback) {
 					console.log(body)
 					callback("test");
 			});
-			
-			res.on("error", function(e) {
-				console.log(e);
-				callback({success: false, error: e});
-			});
   });
 	
   // post the data
   post_req.write(post_data);
   post_req.end();
-
+	
+	post_req.on("error", function(e) {
+		console.log(e);
+		callback({success: false, error: e});
+	});
 }
 
 module.exports = {getRequest, postRequest};
