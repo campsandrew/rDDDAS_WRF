@@ -6,7 +6,7 @@ const config = {
 			"192.168.56.102",
 			"192.168.56.103"
 		],
-		watch_path: "/Users/AndrewCamps/Desktop/DATA",
+		watch_path: "/home/hduser/DATA",
 		interval: 10800
 	},
 	wrf: {
