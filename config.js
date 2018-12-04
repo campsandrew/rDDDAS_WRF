@@ -6,15 +6,16 @@ const config = {
 			"192.168.56.102",
 			"192.168.56.103"
 		],
-		watch_path: "/home/hduser/DATA"
+		watch_path: "/Users/AndrewCamps/Desktop/DATA",
+		interval: 10800
 	},
 	wrf: {
 		host: "localhost",
 		port: 3000
 	},
 	hdfs: {
-		host: "localhost",
-		port: 50070
+		host: "192.168.56.101",
+		port: 8020
 	}
 }
 
