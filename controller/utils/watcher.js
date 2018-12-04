@@ -22,16 +22,16 @@ function added_directory(dir_path) {
 		var dir = dir_time[1].slice(0, 4) + "_" + 
 							dir_time[1].slice(4, 6) + "_" +
 							dir_time[1].slice(6, 8);
-		var hdfs_cmd = "hdfs dfs -mkdir " + path.join(config.hdfs.data_dir, dir);
+		var date
+		var hdfs_dir = path.join(config.hdfs.data_dir, dir);
+		var hdfs_cmd = "hdfs dfs -mkdir " + hdfs_dir;
 		
 		cmd.get(hdfs_cmd, function(err, data, stderr) {
 			console.log("Make directory call")
 			if(!err) {
-				console.log("No error")
-				console.log(data)
-				console.log(stderr)
+				console.log("HDFS: directory created " + hdfs_dir);
 			} else {
-				console.log(err)
+				console.log(err.Error);
 			}
 		});
 	}
