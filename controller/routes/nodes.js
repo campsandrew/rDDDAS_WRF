@@ -3,8 +3,14 @@ const config = require("../../config");
 
 router.get("/", function(req, res) {
 	var payload = {
-		wps: config.wps.nodes,
-		wrf: config.wrf.nodes
+		wps: {
+			nodes: config.wps.nodes,
+			port: config.wps.port
+		},
+		wrf: {
+			nodes: config.wrf.nodes,
+			port: config.wrf.port
+		}
 	}
 	
 	res.json(payload);

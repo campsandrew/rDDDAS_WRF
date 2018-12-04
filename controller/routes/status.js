@@ -13,9 +13,7 @@ router.get("/", function(req, res) {
 	var payload = {};
 	
 	getRequest(host, loc, port, function(data) {
-		console.log(data);
-		
-		return res.send("TEST");
+		return res.json(data);
 	});
 });
 
