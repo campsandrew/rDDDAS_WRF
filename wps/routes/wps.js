@@ -6,7 +6,6 @@ router.post("/new-geog", function(res, req) {
 });
 
 router.get("/heartbeat", function(req, res) {
-	console.log("HERE")
 	res.json({success: true});
 });
 
