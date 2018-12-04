@@ -15,6 +15,8 @@ app.use(function (req, res, next) {
 	next();
 });
 app.use(express.static(path.join(__dirname, "client")));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 app.use("/", indexRouter);
 
 app.listen(config.controller.port);

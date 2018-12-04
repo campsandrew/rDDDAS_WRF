@@ -4,7 +4,7 @@ const config = require("../../config");
 
 router.post("/new-geog", function(req, res) {
 	console.log(req.body);
-	console.log("HERE")
+	console.log("HERE");
 	
 	
 	res.json({success: true});
