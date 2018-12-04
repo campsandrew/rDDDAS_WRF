@@ -1,4 +1,5 @@
 const http = require("http");
+const querystring = require("querystring");
 
 function getRequest(host, path, port, callback) {
 	options = {
@@ -14,8 +15,8 @@ function getRequest(host, path, port, callback) {
 	var req = http.request(options, function(res) {
 		var body = "";
 		
-    res.on("data", function(d) {
-        body += d;
+    res.on("data", function(data) {
+        body += data;
     });
     res.on("end", function() {
         callback(JSON.parse(body));
@@ -28,4 +29,40 @@ function getRequest(host, path, port, callback) {
   });
 }
 
-module.exports = {getRequest};
+function postRequest(host, path, port, data, callback) {
+	var post_data = querystring.stringify(data);
+
+  // An object of options to indicate where to post to
+  var post_options = {
+      host: host,
+      port: port,
+      path: path,
+      method: "POST",
+      headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Length": Buffer.byteLength(post_data)
+      }
+  };
+
+  // Set up the request
+  var post_req = http.request(post_options, function(res) {
+			var body = "";
+		
+      res.setEncoding("utf8");
+      res.on("data", function (data) {
+					body += data;
+          console.log("Response: " + chunk);
+      });
+			res.on("end", function() {
+					console.log(body)
+					callback(JSON.parse(body));
+			});
+  });
+	
+  // post the data
+  post_req.write(post_data);
+  post_req.end();
+
+}
+
+module.exports = {getRequest, postRequest};

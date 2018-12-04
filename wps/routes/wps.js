@@ -1,8 +1,12 @@
 const router = require("express").Router();
+const cmd = require("node-cmd");
 const config = require("../../config");
 
 router.post("/new-geog", function(res, req) {
-	res.json({});
+	console.log(res.body);
+	
+	
+	res.json({success: true});
 });
 
 router.get("/heartbeat", function(req, res) {

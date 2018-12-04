@@ -9,7 +9,7 @@
 			
 			statusRequest(data);
 		});
-		xhr.open("GET", "http://192.168.56.101:3000/nodes");
+		xhr.open("GET", "http://192.168.56.10:3000/nodes");
 		xhr.send();
 	});
 	

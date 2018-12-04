@@ -1,7 +1,8 @@
 const chokidar = require("chokidar");
-const config = require("../../config");
 const cmd = require("node-cmd");
 const path = require("path");
+const config = require("../../config");
+const {postRequest} = require("./requests");
 
 // Data watcher for WRF
 var data_watcher = chokidar.watch(config.controller.data_watch_path, {
@@ -78,8 +79,17 @@ var geog_watcher = chokidar.watch(config.controller.geog_watch_path, {
 		// Run hdfs file upload command
 		cmd.get(hdfs_cmd, function(err, data, stderr) {
 			if(!err) {
+				var port = config.wps.port;
+				
 				console.log("HDFS: file added " + hdfs_path);
 				cmd.run("rm " + dir_path);
+				
+				// Send message to wps nodes to update geographical data
+				for(var wps of config.wps) {
+					postRequest(wps, "wps/geog-new", port, filename, function(data) {
+						console.log(data);
+					});
+				}
 			} else {
 				console.log("HDFS ERROR: unable to add file " + hdfs_path);
 				//console.log(err);
