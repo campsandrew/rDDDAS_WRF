@@ -16,7 +16,7 @@ watcher
   .on('error', error => console.log(`Watcher error: ${error}`))
   .on('ready', () => console.log('Initial scan complete. Ready for changes'))
   .on('raw', (event, path, details) => {
-    log('Raw event info:', event, path, details);
+    console.log('Raw event info:', event, path, details);
 });
 
 app.use(express.static("client"));
