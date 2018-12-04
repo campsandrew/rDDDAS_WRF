@@ -58,7 +58,10 @@ function postRequest(host, path, port, data, callback) {
 					callback("test");
 			});
 			
-			res.on("error", )
+			res.on("error", function(e) {
+				console.log(e);
+				callback({success: false, error: e});
+			});
   });
 	
   // post the data
