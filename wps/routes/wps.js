@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const cmd = require("node-cmd");
+const path = require("path");
 const config = require("../../config");
 
 const unzipFlags = {
@@ -11,7 +12,7 @@ router.post("/new-geog", function(req, res) {
 	var file = req.body.file;
 	var type = file.split(".").slice(-1)[0].toLowerCase();
 	var dir = config.wps.geog_dir;
-	var hdfs_dir = config.hdfs.geog_dir;
+	var hdfs_dir = path.join(config.hdfs.geog_dir, file);
 	var hdfs_cmd = "hdfs dfs -get " + hdfs_dir + " " + dir;
 	
 	// Run hdfs file upload command
