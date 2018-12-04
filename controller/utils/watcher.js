@@ -87,7 +87,7 @@ var geog_watcher = chokidar.watch(config.controller.geog_watch_path, {
 				
 				// Send message to wps nodes to update geographical data
 				for(var wps of config.wps.nodes) {
-					postRequest(wps, "wps/geog-new", port, send, function(data) {
+					postRequest(wps, "wps/new-geog", port, send, function(data) {
 						console.log(data);
 					});
 				}

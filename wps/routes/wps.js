@@ -3,8 +3,7 @@ const cmd = require("node-cmd");
 const config = require("../../config");
 
 router.post("/new-geog", function(req, res) {
-	console.log(req);
-	console.log("HERE")
+	console.log(req.body);
 	
 	
 	res.json({success: true});
