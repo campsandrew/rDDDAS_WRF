@@ -47,15 +47,15 @@ function added_file(dir_path) {
 							dir_time[1].slice(4, 6) + "_" +
 							dir_time[1].slice(6, 8);
 		var hdfs_path = path.join(config.hdfs.data_dir, dir, filename);
-		var hdfs_cmd = "hdfs dfs -put " + dir_path + " " + hdfs_path;
+		var hdfs_cmd = "hdfs dfs -put -f " + dir_path + " " + hdfs_path;
 		
 		// Run hdfs file upload command
 		cmd.get(hdfs_cmd, function(err, data, stderr) {
 			if(!err) {
 				console.log("HDFS: file added " + hdfs_path);
 			} else {
-				//console.log("HDFS ERROR: unable to add file " + hdfs_path);
-				console.log(err);
+				console.log("HDFS ERROR: unable to add file " + hdfs_path);
+				//console.log(err);
 			}
 		});
 	}
