@@ -22,7 +22,12 @@ function getRequest(host, path, port, callback) {
 				
         callback(parsed);
     });
-	});		
+	});
+	
+	req.setTimeout(6000, function() {
+    this.abort();
+		callback({success: false});
+	}).bind(req);
 	req.end();
 
   req.on("error", function(e) {
