@@ -7,7 +7,11 @@ const app = express();
 
 var watcher = chokidar.watch(config.controller.watch_path, {
   ignored: /(^|[\/\\])\../,
-  persistent: true
+  persistent: true,
+	awaitWriteFinish: {
+    stabilityThreshold: 5000
+    //pollInterval: 600
+  }
 });
 
 watcher
