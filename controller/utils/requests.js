@@ -51,10 +51,8 @@ function postRequest(host, path, port, data, callback) {
       res.setEncoding("utf8");
       res.on("data", function(data) {
 					body += data;
-          console.log("Response: " + data);
       });
 			res.on("end", function() {
-					console.log(body)
 					callback(body);
 			});
   });
