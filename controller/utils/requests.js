@@ -25,9 +25,9 @@ function getRequest(host, path, port, callback) {
 	});
 	
 	req.setTimeout(6000, function() {
-    this.abort();
 		callback({success: false});
-	}).bind(req);
+    req.abort();
+	});
 	req.end();
 
   req.on("error", function(e) {
