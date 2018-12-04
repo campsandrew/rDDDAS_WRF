@@ -13,19 +13,13 @@ function getRequest(host, path, port, callback) {
 	
 	var req = http.request(options, function(res) {
 		var body = "";
-					
+		
     res.on("data", function(d) {
         body += d;
     });
     res.on("end", function() {
-        var parsed = JSON.parse(body);
-				
-        callback(parsed);
+        callback(JSON.parse(body));
     });
-	});
-	
-	req.setTimeout(6000, function() {
-    req.abort();
 	});
 	req.end();
 

@@ -10,7 +10,6 @@ router.get("/", function(req, res) {
 	var loc = "/" + req.query.node + "/heartbeat";
 	var host = req.query.host;
 	var port = config[req.query.node].port;
-	var payload = {};
 	
 	getRequest(host, loc, port, function(data) {
 		return res.json(data);

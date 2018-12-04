@@ -7,38 +7,52 @@
 		xhr.addEventListener("load", function() {
 			var data = JSON.parse(xhr.response);
 			
-			statusRequest(JSON.parse(xhr.response));
+			statusRequest(data);
 		});
 		xhr.open("GET", "http://localhost:3000/nodes");
 		xhr.send();
 	});
 	
 	function statusRequest(data) {
+		var wps = document.getElementById("wps");
+		var wrf = document.getElementById("wrf");
 		
-		console.log(data)
+		wps.innerHTML = "<ul>";
+		wrf.innerHTML = "<ul>";
 		
-		for(var host of data.wps.nodes) {
-			var xhr = new XMLHttpRequest();
-			var url = "http://" + host + ":" + data.wps.port + "wps/heartbeat";
-			console.log(url)
+		data.wps.forEach(function(host) {
+			let xhr = new XMLHttpRequest();
+			let url = "http://localhost:3000/heartbeat/?node=wps&host=" + host;
 			
+			wps.innerHTML += "<li id=wps_" + host + ">" + host + ": " + "Offline</li>";
 			xhr.addEventListener("load", function() {
-				console.log(xhr.response);
+				var res = JSON.parse(xhr.response);
+				
+				if(res.success) {
+					document.getElementById("wps_" + host).innerHTML = host + ": " + "Online";
+				}
 			});
 			xhr.open("GET", url);
 			xhr.send();
-		}
+		});
 		
-		for(var host of data.wrf.nodes) {
-			var xhr = new XMLHttpRequest();
-			var url = "http://" + host + ":" + data.wrf.port + "wrf/heartbeat";
-			console.log(url)
+		data.wrf.forEach(function(host) {
+			let xhr = new XMLHttpRequest();
+			let url = "http://localhost:3000/heartbeat/?node=wrf&host=" + host;
 			
+			wrf.innerHTML += "<li id=wrf_" + host + ">" + host + ": " + "Offline</li>";
 			xhr.addEventListener("load", function() {
-				console.log(xhr.response);
+				var res = JSON.parse(xhr.response);
+				
+				if(res.success) {
+					document.getElementById("wrf_" + host).innerHTML = host + ": " + "Online";
+				}
 			});
 			xhr.open("GET", url);
 			xhr.send();
-		}
+		});
+		
+		wps.innerHTML += "</ul>";
+		wrf.innerHTML += "</ul>";
 	}
 })();
