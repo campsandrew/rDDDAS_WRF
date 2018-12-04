@@ -25,13 +25,13 @@ function getRequest(host, path, port, callback) {
 	});
 	
 	req.setTimeout(6000, function() {
-		callback({success: false});
+		console.log("TIMEOUT")
     req.abort();
 	});
 	req.end();
 
   req.on("error", function(e) {
-    console.error(e);
+		callback({success: false, error: e});
   });
 }
 
