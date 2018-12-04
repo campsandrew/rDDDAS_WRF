@@ -20,7 +20,7 @@ function getRequest(host, path, port, callback) {
     res.on("end", function() {
         var parsed = JSON.parse(body);
 				
-        callback(body);
+        callback(parsed);
     });
 	});		
 	req.end();
