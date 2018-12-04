@@ -53,6 +53,7 @@ function added_file(dir_path) {
 		cmd.get(hdfs_cmd, function(err, data, stderr) {
 			if(!err) {
 				console.log("HDFS: file added " + hdfs_path);
+				cmd.run("rm " + dir_path);
 			} else {
 				console.log("HDFS ERROR: unable to add file " + hdfs_path);
 				//console.log(err);
