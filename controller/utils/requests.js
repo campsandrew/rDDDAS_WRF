@@ -49,14 +49,16 @@ function postRequest(host, path, port, data, callback) {
 			var body = "";
 		
       res.setEncoding("utf8");
-      res.on("data", function (data) {
+      res.on("data", function(data) {
 					body += data;
           console.log("Response: " + chunk);
       });
 			res.on("end", function() {
 					console.log(body)
-					callback(JSON.parse(body));
+					callback("test");
 			});
+			
+			res.on("error", )
   });
 	
   // post the data
