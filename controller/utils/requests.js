@@ -55,7 +55,7 @@ function postRequest(host, path, port, data, callback) {
       });
 			res.on("end", function() {
 					console.log(body)
-					callback("test");
+					callback(body);
 			});
   });
 	
