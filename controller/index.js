@@ -16,7 +16,7 @@ var watcher = chokidar.watch(config.controller.watch_path, {
 });
 
 watcher
-  .on('change', path => console.log(`Directory ${path} has been added`))
+  .on('add', path => console.log(`Directory ${path} has been added`))
   .on('error', error => console.log(`Watcher error: ${error}`))
   .on('ready', () => console.log('Initial scan complete. Ready for changes'))
 
