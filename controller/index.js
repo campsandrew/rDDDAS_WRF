@@ -9,16 +9,18 @@ var watcher = chokidar.watch(config.controller.watch_path, {
   ignored: /(^|[\/\\])\../,
   persistent: true,
 	awaitWriteFinish: {
-    stabilityThreshold: 5000,
-    pollInterval: 600
+    pollInterval: 500
   },
 	depth: 5 
 });
 
 watcher
-  .on('add', path => console.log(`Directory ${path} has been added`))
-  .on('error', error => console.log(`Watcher error: ${error}`))
-  .on('ready', () => console.log('Initial scan complete. Ready for changes'))
+  .on('add', function(path) {
+		
+	})
+  .on('ready', function(path) {
+		console.log(path)
+	})
 
 app.use(express.static("client"));
 app.use("/", indexRouter);
