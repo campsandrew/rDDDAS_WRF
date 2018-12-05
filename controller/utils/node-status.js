@@ -25,10 +25,10 @@ function createStatusFile() {
 	var stats = {wps: {}, wrf: {}};
 	
 	for(var wps of config.wps.nodes) {
-		stats.wps[wps] = "Unknown"
+		stats.wps[wps] = "Unknown";
 	}
 	for(var wrf of config.wrf.nodes) {
-		stats.wrf[wrf] = "Unknown"
+		stats.wrf[wrf] = "Unknown";
 	}
 	
 	// Create status file
@@ -38,39 +38,34 @@ function createStatusFile() {
 }
 
 function initialStatus() {
-	var url = "";
-	var data;
-	var port;
 	
-	// Update all node statuses for wps
-	for(var wps of config.wps.nodes) {
-		port = config.wps.port;
-		url = "/wps/heartbeat";
+	// Heartbeat status checks for all WPS nodes
+	config.wps.nodes.forEach(function(host) {
+		let port = config.wps.port;
+		let url = "/wps/heartbeat";
 		
-		getRequest(wps, url, port, function(data) {
-			var status = "No Response";
-
+		getRequest(host, url, port, function(data) {
 			if(data.success) {
-				status = data.stutus;
+				return updateStatus("wps", host, data.status);
 			}
-			updateStatus("wps", wps, status);
-		});
-	}
-	
-	// Update all node statuses for wrf
-	for(var wrf of config.wrf.nodes) {
-		port = config.wps.port;
-		url = "/wrf/heartbeat";
-		
-		getRequest(wrf, url, port, function(data) {
-			var status = "No Response";
 			
-			if(data.success) {
-				status = data.stutus;
-			}
-			updateStatus("wrf", wrf, status)
+			updateStatus("wps", host, "No Response");
 		});
-	}
+	});
+	
+	// Heartbeat status checks for all WRF nodes
+	config.wrf.nodes.forEach(function(host) {
+		let port = config.wrf.port;
+		let url = "/wrf/heartbeat";
+		
+		getRequest(host, url, port, function(data) {
+			if(data.success) {
+				return updateStatus("wrf", host, data.status);
+			}
+			
+			updateStatus("wrf", host, "No Response");
+		});
+	});
 }
 
 module.exports = {allStats, updateStatus, currentStatus, createStatusFile};

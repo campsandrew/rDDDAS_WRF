@@ -42,6 +42,7 @@ router.post("/new-geog", function(req, res) {
 });
 
 router.get("/heartbeat", function(req, res) {
+	console.log("WPS: heartbeat");
 	res.json({success: true, status: "Online"});
 });
 
