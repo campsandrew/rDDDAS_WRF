@@ -1,0 +1,11 @@
+{
+  "192.168.56.102": {
+    "type": "WPS",
+    "status": "Online"
+  },
+  "192.168.56.103": {
+    "type": "WPS",
+    "status": "Offline",
+    "ready": false
+  }
+}
