@@ -2,6 +2,7 @@ const router = require("express").Router();
 const cmd = require("node-cmd");
 const path = require("path");
 const config = require("../../config");
+const {postRequest} = require("../utils/requests");
 
 const unzipFlags = {
 	bz2: "-jxf",
@@ -23,13 +24,12 @@ router.post("/new-geog", function(req, res) {
 												 + " " + path.join(dir, file) 
 												 + "-C " + dir
 			
+			console.log("HDFS: file added to " + dir);
 			cmd.get(unzip, function(err, data, stderr) {
+				//var status = ""
+				console.log("Unzip finished")
 				console.log(err, stderr);
 			});
-			console.log("tar " + unzipFlags[type] + " " + path.join(dir, file))
-			console.log("HDFS: file added to " + dir);
-			
-			//Send finished status
 		} else {
 			console.log("HDFS ERROR: unable to get file from " + hdfs_dir);
 			console.log(stderr);
@@ -38,12 +38,14 @@ router.post("/new-geog", function(req, res) {
 		}
 	});
 	
-	res.json({success: true, status: "Extracting Geographical Data"});
+	res.json({success: true, 
+						ready: false, 
+						status: "Busy: extracting geographical data"});
 });
 
 router.get("/heartbeat", function(req, res) {
 	console.log("WPS: heartbeat");
-	res.json({success: true, status: "Online"});
+	res.json({success: true, ready: true, status: "Online"});
 });
 
 module.exports = router;

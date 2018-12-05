@@ -2,16 +2,17 @@ const fs = require("fs");
 const {getRequest} = require("./requests");
 const config = require("../../config.js");
 
-function currentStatus(node, host) {
+function currentStatus(host) {
 	var stats = allStats();
-	return stats[node][host];
+	return stats[host];
 }
 
-function updateStatus(node, host, status) {
+function updateStatus(host, status, ready) {
 	var stats = allStats();
 	var data;
 	
-	stats[node][host] = status;
+	stats[host].status = status;
+	stats[host].ready = ready;
 	data = JSON.stringify(stats, null, 2);
 	fs.writeFileSync(config.controller.status_path, data);
 }
@@ -22,13 +23,19 @@ function allStats() {
 }
 
 function createStatusFile() {
-	var stats = {wps: {}, wrf: {}};
+	var stats = {};
 	
 	for(var wps of config.wps.nodes) {
-		stats.wps[wps] = "Offline";
+		stats[wps] = {};
+		stats[wps].type = "WRF";
+		stats[wps].status = "Offline";
+		stats[wps].ready = false;
 	}
 	for(var wrf of config.wrf.nodes) {
-		stats.wrf[wrf] = "Offline";
+		stats[wrf] = {};
+		stats[wrf].type = "WPS";
+		stats[wrf].status = "Offline";
+		stats[wrf].ready = false;
 	}
 	
 	// Create status file
@@ -46,7 +53,7 @@ function initialStatus() {
 		
 		getRequest(host, url, port, function(data) {
 			if(data.success) {
-				return updateStatus("wps", host, data.status);
+				return updateStatus(host, data.status, data.ready);
 			}
 		});
 	});
@@ -58,7 +65,7 @@ function initialStatus() {
 		
 		getRequest(host, url, port, function(data) {
 			if(data.success) {
-				return updateStatus("wrf", host, data.status);
+				return updateStatus(host, data.status, data.ready);
 			}
 		});
 	});

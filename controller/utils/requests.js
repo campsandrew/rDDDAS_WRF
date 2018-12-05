@@ -25,7 +25,7 @@ function getRequest(host, path, port, callback) {
 	req.end();
 
   req.on("error", function(e) {
-		callback({success: false, error: e});
+		callback({success: false, status: "Error", error: e});
   });
 }
 
@@ -62,8 +62,7 @@ function postRequest(host, path, port, data, callback) {
   post_req.end();
 	
 	post_req.on("error", function(e) {
-		console.log(e);
-		callback({success: false, error: e});
+		callback({success: false, status: "Error", error: e});
 	});
 }
 
