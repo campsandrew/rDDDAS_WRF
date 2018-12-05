@@ -76,26 +76,20 @@ var geog_watcher = chokidar.watch(config.controller.geog_watch_path, {
 
 		// Run hdfs file upload command
 		cmd.get(hdfs_cmd, function(err, data, stderr) {
-			if(!err) {
-				var port = config.wps.port;
-				var send = {file: filename};
-				
+			if(!err) {				
 				console.log("HDFS: file added " + hdfs_path);
 				cmd.run("rm " + dir_path);
 				
 				// Loop through all wps nodes
-				for(var wps of config.wps.nodes) {
+				config.wps.nodes.forEach(function(host) {
+					var port = config.wps.port;
+					var send = {file: filename};
 					
-					// Send message to wps nodes to update geographical data
-					postRequest(wps, "/wps/new-geog", port, send, function(data) {
-						var status = "No response on /wps/new-geog";
-						
-						if(data.success) {
-							status = data.status;
-						}
-						updateStatus("wps", wps, data.status);
+					postRequest(host, "/wps/new-geog", port, send, function(data) {
+						var status = data.success ? data.status : "No response on /wps/new-geog";
+						updateStatus(host, "wps", data.status, data.ready);
 					});
-				}
+				});
 			} else {
 				console.log("HDFS ERROR: " + stderr);
 			}
