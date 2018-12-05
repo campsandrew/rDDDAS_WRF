@@ -19,21 +19,24 @@ router.post("/new-geog", function(req, res) {
 	cmd.run("rm -rf " + path.join(dir, "*"));
 	cmd.get(hdfs_cmd, function(err, data, stderr) {
 		if(!err) {
-			var unzip = "tar " + unzipFlags[type] + " " + path.join(dir, file);
+			var unzip = "tar " + unzipFlags[type] 
+												 + " " + path.join(dir, file) 
+												 + "-C " + dir
 			
 			cmd.get(unzip, function(err, data, stderr) {
 				console.log(err, stderr);
 			});
 			console.log("tar " + unzipFlags[type] + " " + path.join(dir, file))
 			console.log("HDFS: file added to " + dir);
+			
+			//Send finished status
 		} else {
 			console.log("HDFS ERROR: unable to get file from " + hdfs_dir);
 			console.log(stderr);
+			
+			//Send finished status but without updating wps
 		}
 	});
-	
-	// Compile WPS will new data
-	
 	
 	res.json({success: true});
 });
