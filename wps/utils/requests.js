@@ -50,10 +50,11 @@ function postRequest(host, path, port, data, callback) {
 		
       res.setEncoding("utf8");
       res.on("data", function(data) {
-					body += data;
+				body += data;
       });
 			res.on("end", function() {
-					callback(JSON.parse(body));
+				console.log(body)
+					//callback(JSON.parse(body));
 			});
   });
 	
