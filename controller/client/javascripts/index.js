@@ -8,8 +8,8 @@
 	
 	function statusRequest() {
 		var xhr = new XMLHttpRequest();
-		//let url = "http://192.168.56.101:3000/status";
-		let url = "http://localhost:3000/status";
+		let url = "http://192.168.56.101:3000/status";
+		//let url = "http://localhost:3000/status";
 		
 		// Send ajax for node status
 		xhr.addEventListener("load", function() {
