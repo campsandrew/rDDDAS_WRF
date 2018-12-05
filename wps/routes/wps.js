@@ -69,7 +69,7 @@ router.post("/new-geog", function(req, res) {
 router.post("/run", function(req, res) {
 	var command = "";
 	var wps_dir = config.wps.wps_dir;
-	var geog_log = path.join(wps_dir, config.wps.geog_log);
+	var geog_log = path.join(wps_dir, config.wps.geogrid_log);
 	var ungrib_log = path.join(wps_dir, config.wps.ungrib_log);
 	var metgrid_log = path.join(wps_dir, config.wps.metgrid_log);
 	var gfs_data = config.wps.gfs_data;
