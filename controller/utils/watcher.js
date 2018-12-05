@@ -50,6 +50,8 @@ var data_watcher = chokidar.watch(config.controller.data_watch_path, {
 		cmd.get(hdfs_cmd, function(err, data, stderr) {
 			if(!err) {
 				var port = config.wps.port;
+				var send = {};
+				
 				console.log("HDFS: file added " + hdfs_path);
 				cmd.run("rm " + dir_path);
 				
