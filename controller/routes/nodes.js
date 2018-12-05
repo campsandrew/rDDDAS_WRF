@@ -5,7 +5,6 @@ const {updateStatus} = require("../utils/node-status");
 router.post("/", function(req, res) {
 	var host = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 	
-	console.log(host);
 	updateStatus(host, req.body.type, req.body.status, req.body.ready);
 	res.json({success: true});
 });

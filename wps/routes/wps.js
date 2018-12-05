@@ -65,6 +65,64 @@ router.post("/new-geog", function(req, res) {
 						status: "Extracting Geographical Data"});
 });
 
+// Run WPS
+router.post("/run", function(req, res) {
+	var command = "";
+	var wps_dir = config.wps.wps_dir;
+	var geog_log = path.join(wps_dir, config.wps.geog_log);
+	var ungrib_log = path.join(wps_dir, config.wps.ungrib_log);
+	var metgrid_log = path.join(wps_dir, config.wps.metgrid_log);
+	var gfs_data = config.wps.gfs_data;
+	var vtable = path.join(wps_dir, "ungrib/Varibale_Table.GFS");
+	//TODO: Update namelist based on post data
+	
+	console.log("WPS: begin execution");
+	command = path.join(wps_dir, "geogrid.exe") + " > " + geog_log;
+	cmd.get(command, function(err, data, stderr) {
+		if(!err) {
+			//Check for geo_em*
+			
+			
+			var link_cmd = path.join(wps_dir, "link_grib.csh " + gfs_data;
+			
+			console.log("WPS: geogrid.exe ran successfully");
+			cmd.get(link_cmd, function(err, data, stderr) {
+				if(!err) {
+					var link_vtable = "ln -sf " + vtable + " " + path.join(wps_dir, "Vtable")
+					
+					console.log("WPS: grib linked successfully");
+					cmd.get(link_vtable, function(err, data, stderr) {
+						if(!err) {
+							var ungrib_cmd = path.join(wps_dir, "ungrib.exe") + " > " + ungrib_log;
+							
+							console.log("WPS: vtables linked successfully");
+							cmd.get(ungrib_cmd, function(err, data, stderr) {
+								if(!err) {
+									//check for FILE prefix files from namelist.wps
+									
+									var metgrid_cmd = path.join(wps_dir, "metgrid.exe") + " > " + metgrid_log;
+									
+									console.log("WPS: ungrib.exe ran successfully");
+									cmd.get(metgrid_cmd, function(err, data, stderr) {
+										if(!err) {
+											//check for met_em* files
+											
+											console.log("WPS: metgrid ran successfully");
+										}
+									}
+								}
+							});
+						}
+					});
+				}
+			});
+		}
+	}
+	
+	res.json({success: true, ready: false, status: "Running WPS"});
+});
+
+// WPS heartbeat
 router.get("/heartbeat", function(req, res) {
 	console.log("WPS: heartbeat");
 	res.json({success: true, ready: true, status: "Online"});
