@@ -34,7 +34,7 @@ function createStatusFile() {
 			stats[host] = {};
 		}
 		
-		component.status = "Offline";
+		component.status = "Error";
 		component.ready = false;
 		
 		stats[host]["wps"] = component;
@@ -48,7 +48,7 @@ function createStatusFile() {
 			stats[host] = {};
 		}
 		
-		component.status = "Offline";
+		component.status = "Error";
 		component.ready = false;
 		
 		stats[host]["wrf"] = component;
