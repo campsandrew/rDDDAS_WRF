@@ -3,6 +3,7 @@ const cmd = require("node-cmd");
 const path = require("path");
 const config = require("../../config");
 const {postRequest} = require("./requests");
+const {updateStatus} = require("./node-status");
 
 // Data watcher for WRF
 var data_watcher = chokidar.watch(config.controller.data_watch_path, {
