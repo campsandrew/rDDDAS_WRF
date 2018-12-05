@@ -3,7 +3,7 @@
 	
 	window.addEventListener("load", function() {
 		statusRequest();
-		setInterval(statusRequest(), 1000);
+		setInterval(statusRequest, 1000);
 	});
 	
 	function statusRequest() {
