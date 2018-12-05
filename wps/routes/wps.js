@@ -109,7 +109,7 @@ router.post("/run", function(req, res) {
 											
 											console.log("WPS: metgrid ran successfully");
 										}
-									}
+									});
 								}
 							});
 						}
