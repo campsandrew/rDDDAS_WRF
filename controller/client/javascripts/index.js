@@ -10,7 +10,7 @@
 		var xhr = new XMLHttpRequest();
 		var wps = document.getElementById("wps");
 		var wrf = document.getElementById("wrf");
-		let url = "http://192.166.56.101:3000/status";
+		let url = "http://192.168.56.101:3000/status";
 		
 		wps.innerHTML = "";
 		wrf.innerHTML = "";
