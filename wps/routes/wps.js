@@ -87,6 +87,7 @@ router.post("/run", function(req, res) {
 			
 			console.log("WPS: geogrid.exe ran successfully");
 			cmd.get(link_cmd, function(err, data, stderr) {
+				console.log(err);
 				if(!err) {
 					var link_vtable = "ln -sf " + vtable + " " + path.join(wps_dir, "Vtable")
 					
