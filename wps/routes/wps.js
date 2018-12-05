@@ -38,11 +38,11 @@ router.post("/new-geog", function(req, res) {
 		}
 	});
 	
-	res.json({success: true});
+	res.json({success: true, status: "Extracting Geographical Data"});
 });
 
 router.get("/heartbeat", function(req, res) {
-	res.json({success: true});
+	res.json({success: true, status: "Online"});
 });
 
 module.exports = router;

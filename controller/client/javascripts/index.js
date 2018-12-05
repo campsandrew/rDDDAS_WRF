@@ -2,55 +2,35 @@
 	"use strict";
 	
 	window.addEventListener("load", function() {
-		var xhr = new XMLHttpRequest();
-		
-		xhr.addEventListener("load", function() {
-			var data = JSON.parse(xhr.response);
-			
-			statusRequest(data);
-		});
-		xhr.open("GET", "http://192.168.56.10:3000/nodes");
-		xhr.send();
+		statusRequest();
+
 	});
 	
-	function statusRequest(data) {
+	function statusRequest() {
+		var xhr = new XMLHttpRequest();
 		var wps = document.getElementById("wps");
 		var wrf = document.getElementById("wrf");
+		let url = "http://192.168.56.101:3000/status";
 		
 		wps.innerHTML = "<ul>";
 		wrf.innerHTML = "<ul>";
 		
-		data.wps.forEach(function(host) {
-			let xhr = new XMLHttpRequest();
-			let url = "http://192.168.56.101:3000/heartbeat/?node=wps&host=" + host;
+		// Send ajax for node status
+		xhr.addEventListener("load", function() {
+			var res = JSON.parse(xhr.response);
 			
-			wps.innerHTML += "<li id=wps_" + host + ">" + host + ": " + "Offline</li>";
-			xhr.addEventListener("load", function() {
-				var res = JSON.parse(xhr.response);
-				
-				if(res.success) {
-					document.getElementById("wps_" + host).innerHTML = host + ": " + "Online";
+			if(res.success) {
+				for(var host of res.stats.wps) {
+					//document.getElementById("wps_" + host).innerHTML = host + ": " + "Online";
 				}
-			});
-			xhr.open("GET", url);
-			xhr.send();
-		});
-		
-		data.wrf.forEach(function(host) {
-			let xhr = new XMLHttpRequest();
-			let url = "http://192.168.56.101:3000/heartbeat/?node=wrf&host=" + host;
-			
-			wrf.innerHTML += "<li id=wrf_" + host + ">" + host + ": " + "Offline</li>";
-			xhr.addEventListener("load", function() {
-				var res = JSON.parse(xhr.response);
 				
-				if(res.success) {
-					document.getElementById("wrf_" + host).innerHTML = host + ": " + "Online";
+				for(var host of res.stats.wrf) {
+					//document.getElementById("wrf_" + host).innerHTML = host + ": " + "Online";
 				}
-			});
-			xhr.open("GET", url);
-			xhr.send();
+			}
 		});
+		xhr.open("GET", url);
+		xhr.send();
 		
 		wps.innerHTML += "</ul>";
 		wrf.innerHTML += "</ul>";

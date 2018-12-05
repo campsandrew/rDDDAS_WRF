@@ -2,11 +2,12 @@ const express = require("express");
 const config = require("../config");
 const watcher = require("./utils/watcher");
 const path = require("path");
-
+const {createStatusFile} = require("./utils/node-status");
 const indexRouter = require("./routes");
 
 const app = express();
 
+createStatusFile();
 app.use(function (req, res, next) {
 	res.setHeader('Allow-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');

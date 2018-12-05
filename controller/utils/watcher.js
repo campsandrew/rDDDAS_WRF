@@ -28,8 +28,7 @@ var data_watcher = chokidar.watch(config.controller.data_watch_path, {
 			if(!err) {
 				console.log("HDFS: directory created " + hdfs_dir);
 			} else {
-				console.log("HDFS ERROR: directory already exists " + hdfs_dir);
-				//console.log(err);
+				console.log("HDFS ERROR: " + stderr);
 			}
 		});
 	}
@@ -52,8 +51,7 @@ var data_watcher = chokidar.watch(config.controller.data_watch_path, {
 				console.log("HDFS: file added " + hdfs_path);
 				cmd.run("rm " + dir_path);
 			} else {
-				console.log("HDFS ERROR: unable to add file " + hdfs_path);
-				//console.log(err);
+				console.log("HDFS ERROR: " + stderr);
 			}
 		});
 	}
@@ -85,19 +83,21 @@ var geog_watcher = chokidar.watch(config.controller.geog_watch_path, {
 				console.log("HDFS: file added " + hdfs_path);
 				cmd.run("rm " + dir_path);
 				
-				// Send message to wps nodes to update geographical data
+				// Loop through all wps nodes
 				for(var wps of config.wps.nodes) {
+					
+					// Send message to wps nodes to update geographical data
 					postRequest(wps, "/wps/new-geog", port, send, function(data) {
+						var status = "No response on /wps/new-geog";
+						
 						if(data.success) {
-							console.log("WPS: " + wps  + " successfully updated geographical data");
-						} else {
-							console.log("WPS: " + wps  + " failed to updatd geographical data");
+							status = data.status;
 						}
+						updateStatus("wps", wps, data.status);
 					});
 				}
 			} else {
-				console.log("HDFS ERROR: unable to add file " + hdfs_path);
-				//console.log(err);
+				console.log("HDFS ERROR: " + stderr);
 			}
 		});
 	}
