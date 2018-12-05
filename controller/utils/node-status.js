@@ -25,10 +25,10 @@ function createStatusFile() {
 	var stats = {wps: {}, wrf: {}};
 	
 	for(var wps of config.wps.nodes) {
-		stats.wps[wps] = "Unknown";
+		stats.wps[wps] = "Offline";
 	}
 	for(var wrf of config.wrf.nodes) {
-		stats.wrf[wrf] = "Unknown";
+		stats.wrf[wrf] = "Offline";
 	}
 	
 	// Create status file
@@ -48,8 +48,6 @@ function initialStatus() {
 			if(data.success) {
 				return updateStatus("wps", host, data.status);
 			}
-			
-			updateStatus("wps", host, "No Response");
 		});
 	});
 	
@@ -62,8 +60,6 @@ function initialStatus() {
 			if(data.success) {
 				return updateStatus("wrf", host, data.status);
 			}
-			
-			updateStatus("wrf", host, "No Response");
 		});
 	});
 }

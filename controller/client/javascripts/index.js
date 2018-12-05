@@ -10,29 +10,26 @@
 		var xhr = new XMLHttpRequest();
 		var wps = document.getElementById("wps");
 		var wrf = document.getElementById("wrf");
-		let url = "http://192.168.56.101:3000/status";
+		let url = "http://localhost:3000/status";
 		
-		wps.innerHTML = "<ul>";
-		wrf.innerHTML = "<ul>";
+		wps.innerHTML = "";
+		wrf.innerHTML = "";
 		
 		// Send ajax for node status
 		xhr.addEventListener("load", function() {
 			var res = JSON.parse(xhr.response);
-			
+
 			if(res.success) {
-				for(var host of res.stats.wps) {
-					//document.getElementById("wps_" + host).innerHTML = host + ": " + "Online";
+				for(var host in res.stats.wps) {
+					wps.innerHTML += "<li>" + host + ": " + res.stats.wps[host] + "</li>";
 				}
 				
-				for(var host of res.stats.wrf) {
-					//document.getElementById("wrf_" + host).innerHTML = host + ": " + "Online";
+				for(var host in res.stats.wrf) {
+					wrf.innerHTML += "<li>" + host + ": " + res.stats.wrf[host] + "</li>";
 				}
 			}
 		});
 		xhr.open("GET", url);
 		xhr.send();
-		
-		wps.innerHTML += "</ul>";
-		wrf.innerHTML += "</ul>";
 	}
 })();
