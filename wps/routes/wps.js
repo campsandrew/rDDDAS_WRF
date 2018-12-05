@@ -14,6 +14,7 @@ router.post("/new-geog", function(req, res) {
 	var type = file.split(".").slice(-1)[0].toLowerCase();
 	var dir = config.wps.geog_dir;
 	var host = config.controller.host;
+	var port = config.wps.port;
 	var hdfs_dir = path.join(config.hdfs.geog_dir, file);
 	var hdfs_cmd = "hdfs dfs -get " + hdfs_dir + " " + dir;
 	var body = {type: "wps"};
