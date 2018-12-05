@@ -53,8 +53,7 @@ function postRequest(host, path, port, data, callback) {
 				body += data;
       });
 			res.on("end", function() {
-				console.log(body)
-					//callback(JSON.parse(body));
+				callback(JSON.parse(body));
 			});
   });
 	

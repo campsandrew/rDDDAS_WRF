@@ -30,8 +30,6 @@ router.post("/new-geog", function(req, res) {
 			
 			// Proceed to unzipping files
 			cmd.get(unzip, function(err, data, stderr) {
-				
-				
 				if(!err) {
 					body.status = "Geographical Data Updated";
 					body.ready = true;
@@ -41,7 +39,6 @@ router.post("/new-geog", function(req, res) {
 					console.log("UNZIP ERROR: " + stderr);
 				}
 				
-				console.log(host + " " + port + " " + body);
 				//Send status message back to controller
 				postRequest(host, "/node", port, body, function(data) {
 					if(!data.success) {
