@@ -15,7 +15,8 @@
 		xhr.addEventListener("load", function() {
 			var res = JSON.parse(xhr.response);
 			var nodes = document.getElementById("nodes");
-
+			
+			nodes.innerHTML = "";
 			if(res.success) {
 				var types = [];
 				
