@@ -72,7 +72,7 @@ router.post("/run", function(req, res) {
 	var geog_log = path.join(wps_dir, config.wps.geogrid_log);
 	var ungrib_log = path.join(wps_dir, config.wps.ungrib_log);
 	var metgrid_log = path.join(wps_dir, config.wps.metgrid_log);
-	var gfs_data = config.wps.gfs_data;
+	var gfs_data = config.wps.gfs_dir;
 	var vtable = path.join(wps_dir, "ungrib/Varibale_Table.GFS");
 	//TODO: Update namelist based on post data
 	
