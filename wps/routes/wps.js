@@ -19,7 +19,11 @@ router.post("/new-geog", function(req, res) {
 	cmd.run("rm -rf " + path.join(dir, "*"));
 	cmd.get(hdfs_cmd, function(err, data, stderr) {
 		if(!err) {
-			cmd.run("tar " + unzipFlags[type] + " " + path.join(dir, file));
+			var unzip = "tar " + unzipFlags[type] + " " + path.join(dir, file);
+			
+			cmd.get(unzip, function(err, data, stderr) {
+				console.log(err, stderr);
+			});
 			console.log("tar " + unzipFlags[type] + " " + path.join(dir, file))
 			console.log("HDFS: file added to " + dir);
 		} else {
