@@ -83,7 +83,7 @@ router.post("/run", function(req, res) {
 			//Check for geo_em*
 			
 			
-			var link_cmd = path.join(wps_dir, "link_grib.csh " + gfs_data;
+			var link_cmd = path.join(wps_dir, "link_grib.csh") + " " + gfs_data;
 			
 			console.log("WPS: geogrid.exe ran successfully");
 			cmd.get(link_cmd, function(err, data, stderr) {
