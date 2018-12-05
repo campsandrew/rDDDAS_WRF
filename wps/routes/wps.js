@@ -22,11 +22,11 @@ router.post("/new-geog", function(req, res) {
 		if(!err) {
 			var unzip = "tar " + unzipFlags[type] 
 												 + " " + path.join(dir, file) 
-												 + "-C " + dir
+												 + " -C " + dir
 			
 			console.log("HDFS: file added to " + dir);
 			cmd.get(unzip, function(err, data, stderr) {
-				//var status = ""
+				var status = ""
 				console.log("Unzip finished")
 				console.log(err, stderr);
 			});
@@ -40,7 +40,7 @@ router.post("/new-geog", function(req, res) {
 	
 	res.json({success: true, 
 						ready: false, 
-						status: "Busy: extracting geographical data"});
+						status: "Extracting Geographical Data"});
 });
 
 router.get("/heartbeat", function(req, res) {
