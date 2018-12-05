@@ -15,15 +15,20 @@ router.post("/new-geog", function(req, res) {
 	var hdfs_dir = path.join(config.hdfs.geog_dir, file);
 	var hdfs_cmd = "hdfs dfs -get " + hdfs_dir + " " + dir;
 	
-	// Run hdfs file upload command
+	// Run hdfs file upload command and unzip new geographical data
+	cmd.run("rm -rf" + dir);
 	cmd.get(hdfs_cmd, function(err, data, stderr) {
 		if(!err) {
+			cmd.run("tar " + unzipFlags[type] + " " + path.join(dir, file));
 			console.log("HDFS: file added to " + dir);
 		} else {
 			console.log("HDFS ERROR: unable to get file from " + hdfs_dir);
 			console.log(stderr);
 		}
 	});
+	
+	// Compile WPS will new data
+	
 	
 	res.json({success: true});
 });
