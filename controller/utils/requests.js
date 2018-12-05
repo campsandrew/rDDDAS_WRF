@@ -19,7 +19,8 @@ function getRequest(host, path, port, callback) {
         body += data;
     });
     res.on("end", function() {
-        callback(JSON.parse(body));
+			//console.log(body)
+    	callback(JSON.parse(body));
     });
 	});
 	req.end();

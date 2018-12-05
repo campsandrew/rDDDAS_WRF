@@ -49,7 +49,7 @@ function initialStatus() {
 		
 		getRequest(wps, url, port, function(data) {
 			var status = "No Response";
-			console.log(data)
+
 			if(data.success) {
 				status = data.stutus;
 			}

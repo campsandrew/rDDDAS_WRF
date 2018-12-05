@@ -15,4 +15,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use("/", indexRouter);
 
+// Catch errors
+app.use(function(req, res) {
+	res.json({success: false, status: "404 path not found"});
+});
+
 app.listen(config.wps.port);
