@@ -117,7 +117,7 @@ router.post("/run", function(req, res) {
 				}
 			});
 		}
-	}
+	});
 	
 	res.json({success: true, ready: false, status: "Running WPS"});
 });
