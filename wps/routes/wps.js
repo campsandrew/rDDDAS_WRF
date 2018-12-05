@@ -14,7 +14,7 @@ router.post("/new-geog", function(req, res) {
 	var type = file.split(".").slice(-1)[0].toLowerCase();
 	var dir = config.wps.geog_dir;
 	var host = config.controller.host;
-	var port = config.wps.port;
+	var port = config.controller.port;
 	var hdfs_dir = path.join(config.hdfs.geog_dir, file);
 	var hdfs_cmd = "hdfs dfs -get " + hdfs_dir + " " + dir;
 	var body = {type: "wps"};
@@ -26,7 +26,7 @@ router.post("/new-geog", function(req, res) {
 			var unzip = "tar " + unzipFlags[type] 
 												 + " " + path.join(dir, file) 
 												 + " -C " + dir
-			console.log("HDFS: file added to " + dir);
+			console.log("HDFS: file added " + path.join(dir, file));
 			
 			// Proceed to unzipping files
 			cmd.get(unzip, function(err, data, stderr) {
