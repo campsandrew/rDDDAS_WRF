@@ -33,7 +33,7 @@
 						}
 						
 						var list = document.getElementById(type + "_ul");
-						var ready = res.stats[host][type].ready ? "Ready" : "Busy";
+						var ready = res.stats[host][type].ready ? "Ready" : "Not Ready";
 						
 						list.innerHTML += "<li>" 
 													 + host + " : " 

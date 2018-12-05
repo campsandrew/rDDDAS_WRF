@@ -5,7 +5,8 @@
       "ready": true
     },
     "wrf": {
-      "status": "Online"
+      "status": "Online",
+      "ready": true
     }
   },
   "192.168.56.103": {
