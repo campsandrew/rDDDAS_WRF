@@ -17,10 +17,10 @@ router.post("/new-geog", function(req, res) {
 	
 	// Run hdfs file upload command and unzip new geographical data
 	cmd.run("rm -rf " + path.join(dir, "*"));
-	console.log("rm -rf " + path.join(dir, "*"));
 	cmd.get(hdfs_cmd, function(err, data, stderr) {
 		if(!err) {
 			cmd.run("tar " + unzipFlags[type] + " " + path.join(dir, file));
+			console.log("tar " + unzipFlags[type] + " " + path.join(dir, file))
 			console.log("HDFS: file added to " + dir);
 		} else {
 			console.log("HDFS ERROR: unable to get file from " + hdfs_dir);
