@@ -2,17 +2,18 @@ const fs = require("fs");
 const {getRequest} = require("./requests");
 const config = require("../../config.js");
 
-function currentStatus(host) {
+function currentStatus(host, type) {
 	var stats = allStats();
-	return stats[host];
+	return stats[host][type];
 }
 
-function updateStatus(host, status, ready) {
+function updateStatus(host, type, status, ready) {
 	var stats = allStats();
 	var data;
 	
-	stats[host].status = status;
-	stats[host].ready = ready;
+	stats[host][type].status = status;
+	stats[host][type].ready = ready;
+	
 	data = JSON.stringify(stats, null, 2);
 	fs.writeFileSync(config.controller.status_path, data);
 }
@@ -25,17 +26,32 @@ function allStats() {
 function createStatusFile() {
 	var stats = {};
 	
-	for(var wps of config.wps.nodes) {
-		stats[wps] = {};
-		stats[wps].type = "WRF";
-		stats[wps].status = "Offline";
-		stats[wps].ready = false;
+	//Init WPS components in config
+	for(var host of config.wps.nodes) {
+		var component = {};
+		
+		if(!stats.hasOwnProperty(host)) {
+			stats[host] = {};
+		}
+		
+		component.status = "Offline";
+		component.ready = false;
+		
+		stats[host]["wps"] = component;
 	}
-	for(var wrf of config.wrf.nodes) {
-		stats[wrf] = {};
-		stats[wrf].type = "WPS";
-		stats[wrf].status = "Offline";
-		stats[wrf].ready = false;
+	
+	//Init WRF components in config
+	for(var host of config.wps.nodes) {
+		var component = {};
+		
+		if(!stats.hasOwnProperty(host)) {
+			stats[host] = {};
+		}
+		
+		component.status = "Offline";
+		component.ready = false;
+		
+		stats[host]["wrf"] = component;
 	}
 	
 	// Create status file
@@ -50,10 +66,11 @@ function initialStatus() {
 	config.wps.nodes.forEach(function(host) {
 		let port = config.wps.port;
 		let url = "/wps/heartbeat";
+		let type = "wps";
 		
 		getRequest(host, url, port, function(data) {
 			if(data.success) {
-				return updateStatus(host, data.status, data.ready);
+				return updateStatus(host, type, data.status, data.ready);
 			}
 		});
 	});
@@ -62,10 +79,11 @@ function initialStatus() {
 	config.wrf.nodes.forEach(function(host) {
 		let port = config.wrf.port;
 		let url = "/wrf/heartbeat";
+		let type = "wrf";
 		
 		getRequest(host, url, port, function(data) {
 			if(data.success) {
-				return updateStatus(host, data.status, data.ready);
+				return updateStatus(host, type, data.status, data.ready);
 			}
 		});
 	});

@@ -1,11 +1,21 @@
 {
   "192.168.56.102": {
-    "type": "WPS",
-    "status": "Online"
+    "wps": {
+      "status": "Online",
+      "ready": true
+    },
+    "wrf": {
+      "status": "Online"
+    }
   },
   "192.168.56.103": {
-    "type": "WPS",
-    "status": "Offline",
-    "ready": false
+    "wps": {
+      "status": "Offline",
+      "ready": false
+    },
+    "wrf": {
+      "status": "Offline",
+      "ready": false
+    }
   }
 }
