@@ -2,12 +2,11 @@
   "name": "rDDDAS_WRF",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "controller": "nodemon controller/index.js",
+    "controller": "nodemon controller.js",
 		"node": "concurrently \"npm run wrf\" \"npm run wps\"",
-    "wrf": "nodemon wrf/index.js",
-    "wps": "nodemon wps/index.js"
+    "wrf": "nodemon wrf.js",
+    "wps": "nodemon wps.js"
   },
   "author": "Andrew Camps",
   "license": "ISC",
