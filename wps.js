@@ -111,6 +111,7 @@ function run_wps(req, res) {
 	let vtable = path.join(wps_dir, "ungrib/Varibale_Table.GFS");
 	let wps_dir = config.wps.wps_dir;
 	let gfs_data = config.wps.gfs_dir;
+	let body = {type: "wps"};
 	let payload = {
 		success: true, 
 		ready: false, 
@@ -145,11 +146,40 @@ function run_wps(req, res) {
 									console.log("WPS: ungrib.exe ran successfully");
 									cmd.get(metgrid_cmd, function(err, data, stderr) {
 										if(!err) {
-											//check for met_em* files
-											
+											//body.status = "WPS: successfully ran";
+											//body.ready = true;
 											console.log("WPS: metgrid ran successfully");
 											
-											//Send update status message
+											// Run hdfs file upload command
+											let hdfs_path = config.hdfs.met_em_dir;
+											let dir_path = path.join(wps_dir, "met_em*")
+											let hdfs_cmd = "hdfs dfs -put -f " + dir_path + " " + hdfs_path;
+											cmd.get(hdfs_cmd, function(err, data, stderr) {
+												if(!err) {				
+													
+													// Delete duplicate files
+													cmd.run("rm " + dir_path);
+													console.log("HDFS: file added " + hdfs_path);
+													
+													body.status = "WPS Successfully Run";
+													body.ready = true;
+													body.wps_output = hdfs_path;
+												} else {
+													body.status = "ERROR: " + stderr;
+													body.ready = false;
+													
+													console.log("HDFS ERROR: " + stderr);
+												}
+												
+												//Send update status message
+												post_request(host, "/node", port, body, function(data) {
+													if(!data.success) {
+														console.log("ERROR: no response from controller");
+													}
+												});
+											});
+										} else {
+											console.log("WPS ERROR: " + stderr);
 										}
 									});
 								}

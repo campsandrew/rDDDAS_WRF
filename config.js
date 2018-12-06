@@ -5,7 +5,7 @@ const config = {
 		status_path: "./nodes.stats",
 		data_watch_path: "/home/hduser/DATA",
 		geog_watch_path: "/home/hduser/WPS_GEOG",
-		interval: 10800
+		interval: 21600
 	},
 	wrf: {
 		port: 3000,
@@ -38,7 +38,8 @@ const config = {
 		met_em_dir: "/wrf/MET_EM",
 		geo_em_dir: "/wrf/GEO_EM",
 		log_dir: "/wrf/LOGS",
-		config_dir: "/wrf/CONFIGS"
+		config_dir: "/wrf/CONFIGS",
+		wrfout_dir: "/wrf/OUTPUT"
 	}
 }
 

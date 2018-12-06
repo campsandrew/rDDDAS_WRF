@@ -70,10 +70,33 @@ chokidar.watch(geog_dir, geog_options)
 //////////
 //Incomming node message router
 function node_messages(req, res) {
-	var host = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	let host = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	
+	// Triggers wrf to run
+	if(req.body.hasOwnProperty("wps_output") && req.body.ready) {
+		run_wrf(req.body.wps_output);
+	}
+	
+	if(req.body.hasOwnProperty("wrf_output") && req.body.ready) {
+		console.log("WRF: successfully receive output from wrf " + req.body.wrf_output);
+	}
 	
 	update_status(host, req.body.type, req.body.status, req.body.ready);
 	res.json({success: true});
+}
+
+function run_wrf(wps_dir) {
+	let random_host = selector("wrf");
+	let port = config.wrf.port;
+	let body = {
+		wps_output: wps_dir
+	}
+	
+	//Trigger WPS controller to begin
+	post_request(random_host, "/wrf/run", port, body, function(data) {
+		var status = data.success ? data.status : "No response on /wrf/run";
+		updateStatus(host, "wrf", data.status, data.ready);
+	});
 }
 
 /////////
@@ -126,7 +149,7 @@ function gfs_file_trigger(dir_path) {
 		// Run hdfs file upload command
 		cmd.get(hdfs_cmd, function(err, data, stderr) {
 			if(!err) {
-				//let random_host = selector("wps");
+				let random_host = selector("wps");
 				let port = config.wps.port;
 				
 				// Delete duplicate files
@@ -134,10 +157,10 @@ function gfs_file_trigger(dir_path) {
 				console.log("HDFS: file added " + hdfs_path);
 				
 				//Trigger WPS controller to begin
-				//postRequest(random_host, "/wps/run", port, {}, function(data) {
-					//var status = data.success ? data.status : "No response on /wps/new-geog";
-					//updateStatus(host, "wps", data.status, data.ready);
-				//});
+				post_request(random_host, "/wps/run", port, {}, function(data) {
+					var status = data.success ? data.status : "No response on /wps/new-geog";
+					updateStatus(host, "wps", data.status, data.ready);
+				});
 			} else {
 				console.log("HDFS ERROR: " + stderr);
 			}
